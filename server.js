@@ -16,6 +16,6 @@ app.use(bodyParser.urlencoded({extended: true}))
 require('./app/loaders/database.loader')();
 
 // init routes
-require('./app/routes')(app);
+require('./app/routes');
 
 module.exports = app;

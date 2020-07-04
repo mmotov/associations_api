@@ -1,9 +1,20 @@
+const express = require('express');
+const app = express();
 const fs = require("fs");
-const routePath = __dirname + '/api/'
+const routePath = __dirname + '/api'
 
-module.exports = function (app) {
-    fs.readdirSync(routePath).forEach(function (file) {
-        const route = './api/' + file;
-        app.use("/", require(route));
-    })
+processRoutePath(routePath);
+
+function processRoutePath(route_path) {
+    fs.readdirSync(route_path).forEach(function(file) {
+        const filepath = route_path + '/' + file;
+        fs.stat(filepath, function(err,stat) {
+            if (stat.isDirectory()) {
+                processRoutePath(filepath);
+            } else {
+                console.info('Loading route: ' + filepath);
+                app.use("/api", require(filepath));
+            }
+        });
+    });
 }
