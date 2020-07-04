@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
+
+
 router.post('/sign-up', function (request, response) {
     response.send("Implement Sign Up router");
 })
@@ -17,7 +19,4 @@ router.post('/forgot-password', function (request, response) {
     response.send("Implement Forgot Password router");
 })
 
-
-
-
-
+module.exports = router;
