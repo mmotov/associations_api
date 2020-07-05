@@ -1,19 +1,21 @@
-const db = require('../models')
+const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
-const User = db.user;
-const Role = db.role;
+const config = require('config');
+
+const User = require('../app/models/user.model');
+const Role = require('../app/models/role.model');
 
 module.exports = function () {
-    db.mongoose.connect(`mongodb://` +
-        `${process.env.DB_HOST}:` +
-        `${process.env.DB_PORT}/` +
-        `${process.env.DB_NAME}`, {
+    mongoose.connect(`mongodb://` +
+        `${config.DB_HOST}:` +
+        `${config.DB_PORT}/` +
+        `${config.DB_NAME}`, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
         useCreateIndex: true,
     }).then(() => {
         console.log("Successfully connected to Database")
-        initial();
+        // initial();
     }).catch((error) => {
         console.log("Connection error", error)
         process.exit();
