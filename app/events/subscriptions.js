@@ -3,4 +3,4 @@ const sendEmailVerification = require('./listeners/sendEmailVerification')
 
 console.info("Subscribing to events...");
 
-event.addListener('user-registered', sendEmailVerification);
+event.addListener('send-verification', sendEmailVerification);

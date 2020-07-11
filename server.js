@@ -8,9 +8,6 @@ const app = express();
 console.log("ENV: ", config.util.getEnv('NODE_ENV'));
 console.log("DB_NAME: ", config.DB_NAME);
 
-// support for .env file
-require('dotenv').config();
-
 // parse request for content-type - application/json
 app.use(bodyParser.json());
 

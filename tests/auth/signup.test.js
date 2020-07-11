@@ -1,6 +1,5 @@
 process.env.NODE_ENV = 'test';
 
-const mongoose = require("mongoose");
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../../server');
@@ -17,7 +16,7 @@ describe('SignUp', () => {
         });
     });
 
-    describe('/POST signup', () => {
+    describe('/POST auth/signup', () => {
         it('it should not register user without username, email or password', (done) => {
             let user = {
                 username: "",
@@ -61,8 +60,9 @@ describe('SignUp', () => {
 
             User.create({
                 username: "username",
-                email: "test@mail.com"
-            }, function (err) {
+                email: "test@mail.com",
+                password: "123456"
+            }, async function (err) {
                 let user = {
                     username: "username",
                     email: "test@mail.com",
