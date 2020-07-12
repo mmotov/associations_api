@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const User = require('app/models/user.model');
 const Role = require('app/models/role.model');
 const EmailVerificationToken = require('app/models/emailVerificationToken.model');
+const PasswordResetToken = require('app/models/passwordResetToken.model');
 
 const event = require('app/utils/eventEmitter');
 
@@ -12,6 +13,7 @@ const ConflictException = require('app/exceptions/ConflictException');
 const ForbiddenException = require('app/exceptions/ForbiddenException');
 
 const EmailVerificationTokenService = require('app/services/emailVerificationToken.service');
+const PasswordResetTokenService = require('app/services/PasswordResetToken.service');
 
 const AuthService = {
     SignUp: async (userDto, host) => {
@@ -62,7 +64,20 @@ const AuthService = {
 
         const token = jwt.sign(user.toJSON(), config.jwtSecret, { expiresIn: '1d' });
         return {user: user, jwt: token};
-    }
+    },
+
+    ForgotPassword: async (email, host) => {
+        let user = await User.findOne({email: email}).orFail(new NotFoundException("User with such email not found"));
+        let token = await PasswordResetTokenService.CreateNewToken(user);
+        event.emit('forgot-password', token, host);
+    },
+
+    ResetPassword: async (resetPasswordDto, tokenStr) => {
+        let token = await PasswordResetToken.findOne({token: tokenStr}).orFail(new NotFoundException("Invalid token"));
+        let user = await User.findById(token.userId).orFail(new NotFoundException("User not found"));
+        user.password = resetPasswordDto.password;
+        user.save();
+    },
 }
 
 module.exports = AuthService;

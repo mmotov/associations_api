@@ -28,3 +28,14 @@ exports.resendVerification = [
     validate
 ]
 
+exports.forgotPassword = [
+    body('email').exists().isEmail(),
+    validate
+]
+
+exports.resetPassword = [
+    param('token').exists().isString().notEmpty(),
+    body('password').isLength({min: 5}).withMessage('Min length: 5').custom(passwordMatch),
+    validate
+]
+

@@ -1,6 +1,5 @@
 const {matchedData} = require('express-validator');
 const AuthService = require('app/services/auth.service');
-const UserService = require("app/services/auth.service");
 
 exports.SignUp = async (req, res, next) => {
     try {
@@ -15,7 +14,7 @@ exports.SignUp = async (req, res, next) => {
 exports.SignIn = async (req, res, next) => {
     try {
         const userDto = matchedData(req);
-        const user = await UserService.SignIn(userDto);
+        const user = await AuthService.SignIn(userDto);
         res.status(200).json(user);
     } catch (e) {
         next(e);
@@ -24,7 +23,7 @@ exports.SignIn = async (req, res, next) => {
 
 exports.Verify = async (req, res, next) => {
     try {
-        await UserService.Verify(req.params.token);
+        await AuthService.Verify(req.params.token);
         res.status(200).json();
     } catch (e) {
         next(e);
@@ -34,7 +33,27 @@ exports.Verify = async (req, res, next) => {
 exports.ResendVerification = async (req, res, next) => {
     try {
         const {email} = matchedData(req);
-        await UserService.ResendVerification(email, req.headers.host);
+        await AuthService.ResendVerification(email, req.headers.host);
+        res.status(200).json();
+    } catch (e) {
+        next(e);
+    }
+}
+
+exports.ForgotPassword = async (req, res, next) => {
+    try {
+        const {email} = matchedData(req);
+        await AuthService.ForgotPassword(email, req.headers.host);
+        res.status(200).json();
+    } catch (e) {
+        next(e);
+    }
+}
+
+exports.ResetPassword = async (req, res, next) => {
+    try {
+        const resetPasswordDto = matchedData(req);
+        await AuthService.ResetPassword(resetPasswordDto, req.params.token);
         res.status(200).json();
     } catch (e) {
         next(e);
