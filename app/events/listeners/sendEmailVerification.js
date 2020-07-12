@@ -1,5 +1,5 @@
-const mailer = require('../../utils/mailer');
-const User = require('../../models/user.model');
+const mailer = require('app/utils/mailer');
+const User = require('app/models/user.model');
 
 module.exports = (token, host) => {
     console.info("Sending verification email");

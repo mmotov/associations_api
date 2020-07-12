@@ -33,7 +33,7 @@ describe('Verify', () => {
     describe('/POST auth/verify', () => {
         it('it should verify user if token is valid', (done) => {
             chai.request(server)
-                .post(`/api/auth/verify/${verificationToken.token}`)
+                .post(`/auth/verify/${verificationToken.token}`)
                 .end(async (err, res) => {
                     res.should.have.status(200);
                     let currentUser = await User.findById(user.id);
@@ -45,7 +45,7 @@ describe('Verify', () => {
         it('it should not verify user if token is not valid', (done) => {
             let fakeToken = crypto.randomBytes(16).toString('hex');
             chai.request(server)
-                .post(`/api/auth/verify/${fakeToken}`)
+                .post(`/auth/verify/${fakeToken}`)
                 .end(async (err, res) => {
                     res.should.have.status(404);
                     let currentUser = await User.findById(user.id);
@@ -58,7 +58,7 @@ describe('Verify', () => {
             user.isVerified = true;
             user.save();
             chai.request(server)
-                .post(`/api/auth/verify/${verificationToken.token}`)
+                .post(`/auth/verify/${verificationToken.token}`)
                 .end(async (err, res) => {
                     res.should.have.status(409);
                     done();

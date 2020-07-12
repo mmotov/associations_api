@@ -27,7 +27,7 @@ describe('ResendVerification', () => {
     describe('/POST auth/resend-verification', () => {
         it('it should send new token if email is valid', (done) => {
             chai.request(server)
-                .post('/api/auth/resend-verification')
+                .post('/auth/resend-verification')
                 .send({email: user.email})
                 .end(async (err, res) => {
                     res.should.have.status(200);
@@ -40,7 +40,7 @@ describe('ResendVerification', () => {
         it('it should not create new token if email is not valid', (done) => {
             const fakeEmail = "fakeEmail";
             chai.request(server)
-                .post('/api/auth/resend-verification')
+                .post('/auth/resend-verification')
                 .send({email: fakeEmail})
                 .end(async (err, res) => {
                     res.should.have.status(422);
@@ -59,7 +59,7 @@ describe('ResendVerification', () => {
                 token: crypto.randomBytes(16).toString('hex')
             }, (err, token) => {
                 chai.request(server)
-                    .post('/api/auth/resend-verification')
+                    .post('/auth/resend-verification')
                     .send({email: user.email})
                     .end(async (err, res) => {
                         res.should.have.status(409);
@@ -76,7 +76,7 @@ describe('ResendVerification', () => {
             user.isVerified = true;
             user.save();
             chai.request(server)
-                .post('/api/auth/resend-verification')
+                .post('/auth/resend-verification')
                 .send({email: user.email})
                 .end(async (err, res) => {
                     res.should.have.status(409);

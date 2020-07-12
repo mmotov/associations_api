@@ -23,7 +23,7 @@ describe('SignUp', () => {
                 email: "",
             };
             chai.request(server)
-                .post('/api/auth/sign-up')
+                .post('/auth/sign-up')
                 .send(user)
                 .end((err, res) => {
                     res.should.have.status(422);
@@ -44,7 +44,7 @@ describe('SignUp', () => {
                 password_confirmation: "22222",
             };
             chai.request(server)
-                .post('/api/auth/sign-up')
+                .post('/auth/sign-up')
                 .send(user)
                 .end((err, res) => {
                     res.should.have.status(422);
@@ -56,7 +56,7 @@ describe('SignUp', () => {
                 });
         })
 
-        it('it should not register user when email or username is already in use', (done) => {
+        it('it should not register user when email is already in use', (done) => {
 
             User.create({
                 username: "username",
@@ -70,16 +70,10 @@ describe('SignUp', () => {
                     password_confirmation: "11111",
                 };
                 chai.request(server)
-                    .post('/api/auth/sign-up')
+                    .post('/auth/sign-up')
                     .send(user)
                     .end((err, res) => {
-                        res.should.have.status(422);
-                        res.body.should.be.a('object');
-                        res.body.should.have.property('errors');
-                        res.body.errors.should.have.property('email');
-                        res.body.errors.email.should.be.equals("Such email is already in use")
-                        res.body.errors.should.have.property('username');
-                        res.body.errors.username.should.be.equals("Username is already in taken")
+                        res.should.have.status(409);
                         done();
                     });
             });

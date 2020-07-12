@@ -1,3 +1,4 @@
+require('module-alias/register')
 const express = require('express');
 const bodyParser = require('body-parser');
 const config = require('config');
@@ -18,10 +19,10 @@ app.use(bodyParser.urlencoded({extended: true}))
 require('./loaders/database.loader')();
 
 // init routes
-require('./app/api')(app);
+require('app/api')(app);
 
 // init event subscribers
-require('./app/events/subscriptions');
+require('app/events/subscriptions');
 
 if (config.util.getEnv('NODE_ENV') !== 'test') {
   //morgan for logs in console

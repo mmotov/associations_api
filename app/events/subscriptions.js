@@ -1,5 +1,5 @@
-const event = require('../utils/eventEmitter');
-const sendEmailVerification = require('./listeners/sendEmailVerification')
+const event = require('app/utils/eventEmitter');
+const sendEmailVerification = require('app/events/listeners/sendEmailVerification')
 
 console.info("Subscribing to events...");
 

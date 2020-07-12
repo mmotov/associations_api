@@ -1,7 +1,8 @@
 const moment = require('moment');
-const EmailVerificationToken = require('../models/emailVerificationToken.model');
-const ConflictException = require('../exceptions/ConflictException');
 const crypto = require('crypto');
+
+const EmailVerificationToken = require('app/models/emailVerificationToken.model');
+const ConflictException = require('app/exceptions/ConflictException');
 
 const EmailVerificationTokenService = {
     CreateNewToken: async (user) => {
