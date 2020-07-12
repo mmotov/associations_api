@@ -18,7 +18,7 @@ function processRoutePath(route_path, app) {
 
 function errorHandler(err, req, res, next) {
     if (err instanceof ApiException) {
-        res.status(err.httpStatus).json(err.message);
+        res.status(err.httpStatus).json({"error": err.message});
     } else {
         res.status(500).json(err);
     }

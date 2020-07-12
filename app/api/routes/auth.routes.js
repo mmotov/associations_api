@@ -31,15 +31,13 @@ router.post('/auth/verify/:token',
 
 router.post('/auth/resend-verification',
     [resendVerificationRules(), validate],
-    async (request, response) => {
+    async (request, response, next) => {
         try {
             const {email} = matchedData(request);
             await UserService.ResendVerification(email, request.headers.host);
             response.status(200).json();
         } catch (e) {
-            if (e instanceof ApiException) {
-                response.status(e.httpStatus).json(e.message);
-            }
+            next(e);
         }
     })
 
