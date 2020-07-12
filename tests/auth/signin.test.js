@@ -65,5 +65,23 @@ describe('SignIn', () => {
                     done();
                 });
         });
+
+        it ('it should sign-in user if credentials are correct', (done) => {
+            let userDto = {
+                email: user.email,
+                password: "password"
+            };
+
+            chai.request(server)
+                .post('/auth/sign-in')
+                .send(userDto)
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.be.a('object');
+                    res.body.should.have.property('user')
+                    res.body.should.have.property('jwt')
+                    done();
+                });
+        })
     });
 });
